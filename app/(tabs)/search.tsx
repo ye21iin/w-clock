@@ -1,8 +1,9 @@
 // Basic search region component
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import { useCities } from "@/context/CityContext";
 import React, { useState } from "react";
-import { FlatList, StyleSheet, TextInput, useColorScheme } from "react-native";
+import { Button, FlatList, StyleSheet, TextInput, useColorScheme } from "react-native";
 
 const DATA = [
   { id: "1", name: "Seoul", country: "South Korea", timezone: "Asia/Seoul" },
@@ -29,6 +30,7 @@ export default function SearchRegion() {
   const [query, setQuery] = useState("");
   const [filteredData, setFilteredData] = useState(DATA);
   const colorScheme = useColorScheme();
+  const {addCity} = useCities();
 
   /** Define function onSearch */
   const handleSearch = (text: string) => {
@@ -59,7 +61,10 @@ export default function SearchRegion() {
         data={filteredData}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <ThemedText style={styles.item}>{item.name}</ThemedText>
+          <ThemedView style={styles.row}>
+            <ThemedText style={styles.item}>{item.name}</ThemedText>
+            <Button title="추가" onPress={() => addCity(item)} />
+          </ThemedView>
         )}
       />
     </ThemedView>
@@ -82,6 +87,13 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 20,
     borderRadius: 8,
+  }, row: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "100%",
+    paddingHorizontal: 10,
+    marginBottom: 10,
   },
   item: {
     fontSize: 18,
