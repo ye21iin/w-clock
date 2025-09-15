@@ -1,56 +1,55 @@
+import { useCities } from "@/context/CityContext";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 interface CityTime {
+  id: string;
   city: string;
   timezone: string;
   time: string;
 }
 
 export default function WorldClockScreen() {
+  const { cities } = useCities();
   const [times, setTimes] = useState<CityTime[]>([]);
 
-  const cities = [
-    { city: "Sydney", timezone: "Australia/Sydney" },
-    { city: "Seoul", timezone: "Asia/Seoul" },
-    { city: "Toronto", timezone: "America/Toronto" },
-    { city: "Vancouver", timezone: "America/Vancouver" },
-  ];
-
-  const updateTimes = () => {
-    const now = new Date();
-    const currentTimes = cities.map(({ city, timezone }) => {
-      const timeInTimezone = new Intl.DateTimeFormat("sv-SE", {
-        timeZone: timezone,
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-        hour12: false,
-      }).format(now);
-
-      return {
-        city,
-        timezone,
-        time: timeInTimezone.replace(" ", " "),
-      };
-    });
-    setTimes(currentTimes);
-  };
+  console.log(times);
 
   useEffect(() => {
+    const updateTimes = () => {
+      const now = new Date();
+      const currentTimes = cities.map(({ id, city, timezone }) => {
+        const timeInTimezone = new Intl.DateTimeFormat("sv-SE", {
+          timeZone: timezone,
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: false,
+        }).format(now);
+
+        return {
+          id,
+          city,
+          timezone,
+          time: timeInTimezone.replace(" ", " "),
+        };
+      });
+      setTimes(currentTimes);
+    };
+
     updateTimes();
     const interval = setInterval(updateTimes, 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [cities]);
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>세세계시계</Text>
-      {times.map(({ city, time }) => (
-        <View key={city} style={styles.timeContainer}>
+      {times.map(({ id, city, time }) => (
+        <View key={id} style={styles.timeContainer}>
           <Text style={styles.cityName}>{city}</Text>
           <Text style={styles.time}>{time}</Text>
         </View>

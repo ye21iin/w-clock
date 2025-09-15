@@ -1,7 +1,7 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
-type City = { id: string; name: string; timezone: string };
+type City = { id: string; city: string; timezone: string };
 
 type CityContextType = {
   cities: City[];
@@ -15,13 +15,13 @@ export const CityProvider = ({ children }: { children: React.ReactNode }) => {
   const [cities, setCities] = useState<City[]>([]);
 
   useEffect(() => {
-    AsyncStorage.getItem('cities').then((data) => {
+    AsyncStorage.getItem("cities").then((data) => {
       if (data) setCities(JSON.parse(data));
     });
   }, []);
 
   useEffect(() => {
-    AsyncStorage.setItem('cities', JSON.stringify(cities));
+    AsyncStorage.setItem("cities", JSON.stringify(cities));
   }, [cities]);
 
   const addCity = (city: City) => setCities((prev) => [...prev, city]);
@@ -37,6 +37,6 @@ export const CityProvider = ({ children }: { children: React.ReactNode }) => {
 
 export const useCities = () => {
   const context = useContext(CityContext);
-  if (!context) throw new Error('useCities must be used inside CityProvider');
+  if (!context) throw new Error("useCities must be used inside CityProvider");
   return context;
 };
