@@ -36,7 +36,9 @@ export default function SearchRegion() {
   const [query, setQuery] = useState("");
   const [filteredData, setFilteredData] = useState(DATA);
   const colorScheme = useColorScheme();
-  const { addCity } = useCities();
+  const { addCity, removeCity, cities } = useCities();
+
+  const isAdded = (cityId: string) => cities.some(c => c.id === cityId);
 
   /** Define function onSearch */
   const handleSearch = (text: string) => {
@@ -69,7 +71,13 @@ export default function SearchRegion() {
         renderItem={({ item }) => (
           <ThemedView style={styles.row}>
             <ThemedText style={styles.item}>{item.city}</ThemedText>
-            <Button title="Add" onPress={() => addCity(item)} />
+            <ThemedView style={styles.buttonContainer}>
+              {!isAdded(item.id) ? (
+                <Button title="Add" onPress={() => addCity(item)} />
+              ) : (
+                <Button title="Remove" color="red" onPress={() => removeCity(item.id)} />
+              )}
+            </ThemedView>
           </ThemedView>
         )}
       />
@@ -105,5 +113,9 @@ const styles = StyleSheet.create({
   item: {
     fontSize: 18,
     padding: 10,
+    flex: 1,
+  },
+  buttonContainer: {
+    minWidth: 80,
   },
 });

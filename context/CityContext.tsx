@@ -44,8 +44,19 @@ export const CityProvider = ({ children }: { children: React.ReactNode }) => {
       return [...prev, city];
     });
   };
-  const removeCity = (id: string) =>
-    setCities((prev) => prev.filter((c) => c.id !== id));
+  const removeCity = (id: string) => {
+    setCities((prev) => {
+      const cityToRemove = prev.find((c) => c.id === id);
+      if (cityToRemove) {
+        Toast.show({
+          type: "success",
+          text1: "City Removed",
+          text2: `${cityToRemove.city} removed from world clock`,
+        });
+      }
+      return prev.filter((c) => c.id !== id);
+    });
+  };
 
   return (
     <CityContext.Provider value={{ cities, addCity, removeCity }}>
