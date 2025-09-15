@@ -2,7 +2,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useCities } from "@/context/CityContext";
 import React, { useEffect, useState } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 
 interface CityTime {
   id: string;
@@ -12,8 +12,18 @@ interface CityTime {
 }
 
 export default function WorldClockScreen() {
-  const { cities } = useCities();
+  const { cities, removeCity } = useCities();
   const [times, setTimes] = useState<CityTime[]>([]);
+  const [openMenuId, setOpenMenuId] = useState<string | null>(null);
+
+  const handleMenuPress = (id: string) => {
+    setOpenMenuId(openMenuId === id ? null : id);
+  };
+
+  const handleDelete = (id: string) => {
+    removeCity(id);
+    setOpenMenuId(null);
+  };
 
   useEffect(() => {
     const updateTimes = () => {
@@ -50,10 +60,33 @@ export default function WorldClockScreen() {
       <ThemedText style={styles.title}>it is my clock</ThemedText>
       {times.map(({ id, city, time }) => (
         <ThemedView key={id} style={styles.timeContainer}>
-          <ThemedText style={styles.cityName}>{city}</ThemedText>
-          <ThemedText style={styles.time}>{time}</ThemedText>
+          <ThemedView style={styles.cityTimeWrapper}>
+            <ThemedView style={styles.cityTimeContent}>
+              <ThemedText style={styles.cityName}>{city}</ThemedText>
+              <ThemedText style={styles.time}>{time}</ThemedText>
+            </ThemedView>
+            <ThemedView style={styles.menuContainer}>
+              <TouchableOpacity 
+                style={styles.menuButton}
+                onPress={() => handleMenuPress(id)}
+              >
+                <ThemedText style={styles.menuDots}>⋯</ThemedText>
+              </TouchableOpacity>
+              {openMenuId === id && (
+                <ThemedView style={styles.dropdown}>
+                  <TouchableOpacity 
+                    style={styles.dropdownItem}
+                    onPress={() => handleDelete(id)}
+                  >
+                    <ThemedText style={styles.deleteText}>Delete</ThemedText>
+                  </TouchableOpacity>
+                </ThemedView>
+              )}
+            </ThemedView>
+          </ThemedView>
         </ThemedView>
       ))}
+
     </ThemedView>
   );
 }
@@ -73,14 +106,58 @@ const styles = StyleSheet.create({
   timeContainer: {
     alignItems: "center",
     marginBottom: 30,
+    width: "100%",
+  },
+  cityTimeWrapper: {
+    position: "relative",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+  },
+  cityTimeContent: {
+    alignItems: "center",
   },
   cityName: {
     fontSize: 20,
     fontWeight: "600",
     marginBottom: 8,
   },
+  menuContainer: {
+    position: "absolute",
+    right: 0,
+    top: 0,
+  },
+  menuButton: {
+    padding: 8,
+  },
+  dropdown: {
+    position: "absolute",
+    top: 36,
+    right: 0,
+    backgroundColor: "white",
+    borderRadius: 8,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    minWidth: 100,
+    zIndex: 1000,
+  },
+  dropdownItem: {
+    padding: 12,
+    borderRadius: 8,
+  },
+  menuDots: {
+    fontSize: 20,
+    fontWeight: "bold",
+  },
   time: {
     fontSize: 18,
     fontFamily: "monospace",
+  },
+  deleteText: {
+    color: "#ff3b30",
+    fontWeight: "600",
   },
 });
