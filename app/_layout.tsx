@@ -3,6 +3,7 @@ import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
+import Toast from 'react-native-toast-message';
 
 import { CityProvider } from '@/context/CityContext';
 import { useColorScheme } from '@/hooks/useColorScheme';
@@ -26,6 +27,7 @@ export default function RootLayout() {
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar style="auto" />
+      <Toast />
       </CityProvider>
     </ThemeProvider>
   );

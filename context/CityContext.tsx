@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { createContext, useContext, useEffect, useState } from "react";
+import Toast from "react-native-toast-message";
 
 type City = { id: string; city: string; timezone: string };
 
@@ -24,7 +25,25 @@ export const CityProvider = ({ children }: { children: React.ReactNode }) => {
     AsyncStorage.setItem("cities", JSON.stringify(cities));
   }, [cities]);
 
-  const addCity = (city: City) => setCities((prev) => [...prev, city]);
+  const addCity = (city: City) => {
+    setCities((prev) => {
+      const exists = prev.some((c) => c.id === city.id);
+      if (exists) {
+        Toast.show({
+          type: "info",
+          text1: "Already Added",
+          text2: `${city.city} is already in your world clock`,
+        });
+        return prev;
+      }
+      Toast.show({
+        type: "success",
+        text1: "City Added",
+        text2: `${city.city} added to world clock`,
+      });
+      return [...prev, city];
+    });
+  };
   const removeCity = (id: string) =>
     setCities((prev) => prev.filter((c) => c.id !== id));
 

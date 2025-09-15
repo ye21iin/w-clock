@@ -13,8 +13,6 @@ export default function WorldClockScreen() {
   const { cities } = useCities();
   const [times, setTimes] = useState<CityTime[]>([]);
 
-  console.log(times);
-
   useEffect(() => {
     const updateTimes = () => {
       const now = new Date();
@@ -47,7 +45,7 @@ export default function WorldClockScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>세세계시계</Text>
+      <Text style={styles.title}>it is my clock</Text>
       {times.map(({ id, city, time }) => (
         <View key={id} style={styles.timeContainer}>
           <Text style={styles.cityName}>{city}</Text>
