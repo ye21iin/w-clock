@@ -1,6 +1,8 @@
+import { ThemedText } from "@/components/ThemedText";
+import { ThemedView } from "@/components/ThemedView";
 import { useCities } from "@/context/CityContext";
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 
 interface CityTime {
   id: string;
@@ -44,15 +46,15 @@ export default function WorldClockScreen() {
   }, [cities]);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>it is my clock</Text>
+    <ThemedView style={styles.container}>
+      <ThemedText style={styles.title}>it is my clock</ThemedText>
       {times.map(({ id, city, time }) => (
-        <View key={id} style={styles.timeContainer}>
-          <Text style={styles.cityName}>{city}</Text>
-          <Text style={styles.time}>{time}</Text>
-        </View>
+        <ThemedView key={id} style={styles.timeContainer}>
+          <ThemedText style={styles.cityName}>{city}</ThemedText>
+          <ThemedText style={styles.time}>{time}</ThemedText>
+        </ThemedView>
       ))}
-    </View>
+    </ThemedView>
   );
 }
 
@@ -61,14 +63,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#fff",
     paddingHorizontal: 20,
   },
   title: {
     fontSize: 28,
     fontWeight: "bold",
     marginBottom: 40,
-    color: "#333",
   },
   timeContainer: {
     alignItems: "center",
@@ -77,12 +77,10 @@ const styles = StyleSheet.create({
   cityName: {
     fontSize: 20,
     fontWeight: "600",
-    color: "#555",
     marginBottom: 8,
   },
   time: {
     fontSize: 18,
     fontFamily: "monospace",
-    color: "#333",
   },
 });
