@@ -2,6 +2,7 @@
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useCities } from "@/context/CityContext";
+import { CITIES as DATA } from "@/data/cities";
 import React, { useState } from "react";
 import {
   Button,
@@ -10,27 +11,6 @@ import {
   TextInput,
   useColorScheme,
 } from "react-native";
-
-const DATA = [
-  { id: "1", city: "Seoul", country: "South Korea", timezone: "Asia/Seoul" },
-  { id: "2", city: "New York", country: "USA", timezone: "America/New_York" },
-  { id: "3", city: "London", country: "UK", timezone: "Europe/London" },
-  { id: "4", city: "Tokyo", country: "Japan", timezone: "Asia/Tokyo" },
-  {
-    id: "5",
-    city: "Vancouver",
-    country: "Canada",
-    timezone: "America/Vancouver",
-  },
-  { id: "6", city: "Toronto", country: "Canada", timezone: "America/Toronto" },
-  {
-    id: "7",
-    city: "Sydney",
-    country: "Australia",
-    timezone: "Australia/Sydney",
-  },
-  { id: "8", city: "Paris", country: "France", timezone: "Europe/Paris" },
-];
 
 export default function SearchRegion() {
   const [query, setQuery] = useState("");
@@ -48,8 +28,6 @@ export default function SearchRegion() {
     );
     setFilteredData(results);
   };
-
-  //   console.log(colorScheme);
 
   return (
     <ThemedView style={styles.container}>
