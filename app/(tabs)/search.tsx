@@ -1,4 +1,7 @@
-// Basic search region component
+/**
+ * Search Region Component
+ * Allows users to search and manage cities in their world clock
+ */
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useCities } from "@/context/CityContext";
@@ -12,17 +15,31 @@ import {
   useColorScheme,
 } from "react-native";
 
+/**
+ * Search Region Screen Component
+ * Provides search functionality to find and add/remove cities from world clock
+ * @returns {JSX.Element} The search region screen component
+ */
 export default function SearchRegion() {
   const [query, setQuery] = useState("");
   const [filteredData, setFilteredData] = useState(DATA);
   const colorScheme = useColorScheme();
   const { addCity, removeCity, cities } = useCities();
 
+  /**
+   * Checks if a city is already added to the world clock
+   * @param {string} cityId - The ID of the city to check
+   * @returns {boolean} True if city is already added, false otherwise
+   */
   const isAdded = (cityId: string) => cities.some(c => c.id === cityId);
 
-  /** Define function onSearch */
+  /**
+   * Handles search input and filters cities based on query
+   * @param {string} text - Search query text
+   */
   const handleSearch = (text: string) => {
     setQuery(text);
+    // Filter cities by name (case-insensitive)
     const results = DATA.filter((item) =>
       item.city.toLowerCase().includes(text.toLowerCase())
     );
