@@ -8,6 +8,13 @@ import Toast from 'react-native-toast-message';
 import { CityProvider } from '@/context/CityContext';
 import { useColorScheme } from '@/hooks/useColorScheme';
 
+/**
+ * Renders the application's root layout with theme selection, font gating, navigation, city context, status bar, and toast support.
+ *
+ * This component waits for the custom font to load before rendering. It selects the navigation theme based on the system color scheme, provides city-related context to descendants, mounts the app navigation stack (including the tabs and not-found routes), and renders a status bar and a global toast container.
+ *
+ * @returns The root React element containing the ThemeProvider, CityProvider-wrapped navigation stack, StatusBar, and Toast components.
+ */
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
