@@ -31,7 +31,7 @@ export default function SearchRegion() {
    * @param {string} cityId - The ID of the city to check
    * @returns {boolean} True if city is already added, false otherwise
    */
-  const isAdded = (cityId: string) => cities.some(c => c.id === cityId);
+  const isAdded = (cityId: string) => cities.some((c) => c.id === cityId);
 
   /**
    * Handles search input and filters cities based on query
@@ -50,13 +50,13 @@ export default function SearchRegion() {
     <ThemedView style={styles.container}>
       <ThemedText style={styles.inputLabel}>Search the region</ThemedText>
       <TextInput
-        style={
-          (styles.input,
+        style={[
+          styles.input,
           {
             color: colorScheme === "dark" ? "#fff" : "#000",
             backgroundColor: colorScheme === "dark" ? "#222" : "#fff",
-          })
-        }
+          },
+        ]}
         value={query}
         onChangeText={handleSearch}
       />
@@ -70,7 +70,11 @@ export default function SearchRegion() {
               {!isAdded(item.id) ? (
                 <Button title="Add" onPress={() => addCity(item)} />
               ) : (
-                <Button title="Remove" color="red" onPress={() => removeCity(item.id)} />
+                <Button
+                  title="Remove"
+                  color="red"
+                  onPress={() => removeCity(item.id)}
+                />
               )}
             </ThemedView>
           </ThemedView>
