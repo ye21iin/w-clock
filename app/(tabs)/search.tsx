@@ -39,9 +39,8 @@ export default function SearchRegion() {
    */
   const handleSearch = (text: string) => {
     setQuery(text);
-    // Filter cities by name (case-insensitive)
     const results = DATA.filter((item) =>
-      item.city.toLowerCase().includes(text.toLowerCase())
+      item.city.toLowerCase().includes(text.trim().toLowerCase())
     );
     setFilteredData(results);
   };
