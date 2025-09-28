@@ -97,17 +97,27 @@ export default function WorldClockScreen() {
               <ThemedText style={styles.time}>{time}</ThemedText>
             </ThemedView>
             <ThemedView style={styles.menuContainer}>
-              <TouchableOpacity 
+              <TouchableOpacity
                 style={styles.menuButton}
+                accessibilityRole="button"
+                accessibilityLabel={`Open options for ${city}`}
+                hitSlop={{ top: 8, right: 8, bottom: 8, left: 8 }}
                 onPress={() => handleMenuPress(id)}
               >
                 <ThemedText style={styles.menuDots}>⋯</ThemedText>
               </TouchableOpacity>
               {openMenuId === id && (
-                <ThemedView style={styles.dropdown}>
-                  <TouchableOpacity 
+                <ThemedView
+                  style={styles.dropdown}
+                  lightColor="#ffffff"
+                  darkColor="#1c1c1e"
+                >
+                  <TouchableOpacity
                     style={styles.dropdownItem}
                     onPress={() => handleDelete(id)}
+                    accessibilityRole="button"
+                    accessibilityLabel={`Delete ${city}`}
+                    accessibilityHint="Removes this city from your world clock"
                   >
                     <ThemedText style={styles.deleteText}>Delete</ThemedText>
                   </TouchableOpacity>
@@ -117,7 +127,6 @@ export default function WorldClockScreen() {
           </ThemedView>
         </ThemedView>
       ))}
-
     </ThemedView>
   );
 }
@@ -165,14 +174,13 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 36,
     right: 0,
-    backgroundColor: "white",
     borderRadius: 8,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-    minWidth: 100,
+    minWidth: 120,
     zIndex: 1000,
   },
   dropdownItem: {
