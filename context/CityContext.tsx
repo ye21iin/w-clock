@@ -31,6 +31,7 @@ type CityContextType = {
 };
 
 const CityContext = createContext<CityContextType | undefined>(undefined);
+const STORAGE_KEY = "cities";
 
 /**
  * City Context Provider Component
@@ -41,25 +42,40 @@ const CityContext = createContext<CityContextType | undefined>(undefined);
  */
 export const CityProvider = ({ children }: { children: React.ReactNode }) => {
   const [cities, setCities] = useState<City[]>([]);
+  const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => {
-    AsyncStorage.getItem("cities")
+    let isMounted = true;
+
+    AsyncStorage.getItem(STORAGE_KEY)
       .then((data) => {
-        if (!data) return;
+        if (!isMounted || !data) return;
         try {
           const parsed = JSON.parse(data);
           if (Array.isArray(parsed)) setCities(parsed);
         } catch (e) {
           console.warn("Failed to parse persisted cities:", e);
-          void AsyncStorage.removeItem("cities").catch(() => {});
+          void AsyncStorage.removeItem(STORAGE_KEY).catch(() => {});
         }
       })
-      .catch((e) => console.warn("Failed to load cities:", e));
+      .catch((e) => {
+        if (isMounted) console.warn("Failed to load cities:", e);
+      })
+      .finally(() => {
+        if (isMounted) setIsHydrated(true);
+      });
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   useEffect(() => {
-    AsyncStorage.setItem("cities", JSON.stringify(cities));
-  }, [cities]);
+    if (!isHydrated) return;
+    void AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(cities)).catch((e) =>
+      console.warn("Failed to persist cities:", e)
+    );
+  }, [cities, isHydrated]);
 
   /**
    * Adds a new city to the world clock
