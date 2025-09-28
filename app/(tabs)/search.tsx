@@ -16,9 +16,12 @@ import {
 } from "react-native";
 
 /**
- * Search Region Screen Component
- * Provides search functionality to find and add/remove cities from world clock
- * @returns {JSX.Element} The search region screen component
+ * Renders a search screen that lets users search cities and add or remove them from the world clock.
+ *
+ * Displays a text input to filter the available city DATA, shows matching results in a list,
+ * and provides per-item actions to add a city to or remove it from the current world clock.
+ *
+ * @returns The rendered search region screen UI
  */
 export default function SearchRegion() {
   const [query, setQuery] = useState("");

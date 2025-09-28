@@ -20,9 +20,11 @@ interface CityTime {
 }
 
 /**
- * World Clock Screen Component
- * Displays real-time clocks for multiple cities with management options
- * @returns {JSX.Element} The world clock screen component
+ * Screen that displays live clocks for multiple cities and lets the user open a per-city menu to delete a city.
+ *
+ * Updates displayed times every second using each city's IANA timezone.
+ *
+ * @returns A JSX element rendering the world clock screen
  */
 export default function WorldClockScreen() {
   const { cities, removeCity } = useCities();

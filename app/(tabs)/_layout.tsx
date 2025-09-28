@@ -8,6 +8,13 @@ import TabBarBackground from "@/components/ui/TabBarBackground";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
 
+/**
+ * Render the app's bottom tab navigator with Home, Search, and Explore tabs.
+ *
+ * The navigator adapts its active tint to the current color scheme, uses a custom haptic tab button and background, and applies an iOS-specific absolute position to enable a blur effect.
+ *
+ * @returns A React element containing the configured bottom Tabs navigator
+ */
 export default function TabLayout() {
   const colorScheme = useColorScheme();
 
