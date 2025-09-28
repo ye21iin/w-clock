@@ -43,9 +43,18 @@ export const CityProvider = ({ children }: { children: React.ReactNode }) => {
   const [cities, setCities] = useState<City[]>([]);
 
   useEffect(() => {
-    AsyncStorage.getItem("cities").then((data) => {
-      if (data) setCities(JSON.parse(data));
-    });
+    AsyncStorage.getItem("cities")
+      .then((data) => {
+        if (!data) return;
+        try {
+          const parsed = JSON.parse(data);
+          if (Array.isArray(parsed)) setCities(parsed);
+        } catch (e) {
+          console.warn("Failed to parse persisted cities:", e);
+          void AsyncStorage.removeItem("cities").catch(() => {});
+        }
+      })
+      .catch((e) => console.warn("Failed to load cities:", e));
   }, []);
 
   useEffect(() => {
@@ -111,7 +120,9 @@ export const CityProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <CityContext.Provider value={{ cities, addCity, removeCity, reorderCities }}>
+    <CityContext.Provider
+      value={{ cities, addCity, removeCity, reorderCities }}
+    >
       {children}
     </CityContext.Provider>
   );
