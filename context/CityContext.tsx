@@ -112,10 +112,15 @@ export const CityProvider = ({ children }: { children: React.ReactNode }) => {
    */
   const reorderCities = (fromIndex: number, toIndex: number) => {
     setCities((prev) => {
-      const newCities = [...prev];
-      const [removed] = newCities.splice(fromIndex, 1);
-      newCities.splice(toIndex, 0, removed);
-      return newCities;
+      if (fromIndex === toIndex || prev.length === 0) return prev;
+      const len = prev.length;
+      if (fromIndex < 0 || fromIndex >= len || toIndex < 0 || toIndex >= len)
+        return prev;
+      const next = [...prev];
+      const [removed] = next.splice(fromIndex, 1);
+      if (!removed) return prev;
+      next.splice(toIndex, 0, removed);
+      return next;
     });
   };
 
